@@ -68,7 +68,7 @@ public class ParkingBot extends TelegramLongPollingBot {
         } //ready
 
         if (text.equals(Command.INFO.commandText)) {
-            sendMessageToChat(chatId, Command.INFO.commandText);
+            sendMessageToChat(chatId, Command.INFO.textToChat());
         } //ready
 
         if (text.equals(Command.WILLBEFREE.commandText)) {
@@ -83,7 +83,7 @@ public class ParkingBot extends TelegramLongPollingBot {
             List<Long> allChatId = db.getAllChatId();
 
             for (Long currentChatId : allChatId)
-                sendMessageToChat(currentChatId, Command.TRAFFICPOLICEALARM.commandText);
+                sendMessageToChat(currentChatId, Command.TRAFFICPOLICEALARM.textToChat());
 
         } //ready?
 
@@ -110,7 +110,11 @@ public class ParkingBot extends TelegramLongPollingBot {
 
     }
 
-    public void handleUserDataInput(Update update) {}
+    public void handleUserDataInput(Update update) {
+        /* Предполагается, что в этот метод попадут все апдейты,
+        которые начинались не с "/" - то есть, не команды, а
+        вводимая пользователем информация */
+    }
 
     public void sendMessageToChat(long chatId, String text) {
         SendMessage msg = new SendMessage();
