@@ -1,9 +1,12 @@
 package org.example.Validations;
 
+import org.example.db.LocalDataBaseInteraction;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ValidForBlocked implements Validatable{
+
     @Override
     public boolean isValid(String text) {
 
@@ -28,4 +31,5 @@ public class ValidForBlocked implements Validatable{
 
         return false;
     }
+
 }

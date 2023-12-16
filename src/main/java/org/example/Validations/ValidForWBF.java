@@ -1,5 +1,7 @@
 package org.example.Validations;
 
+import org.example.db.LocalDataBaseInteraction;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -40,7 +42,9 @@ public class ValidForWBF implements Validatable {
         return true;
     }
 
-    public String[] getMessageData() {
+    private String[] getMessageData() {
         return this.dataFromText;
     }
+
+    //действие, если isValid()
 }

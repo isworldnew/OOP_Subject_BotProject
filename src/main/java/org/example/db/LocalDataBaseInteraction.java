@@ -90,5 +90,44 @@ public class LocalDataBaseInteraction {
         }
     }
 
+    public Long getChatIdByNumberplate(String numberplate) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT chatId FROM Users WHERE numberplate = '" + numberplate + "'");
+            ResultSet queryResult = ps.executeQuery();
+
+            //Тут два случая: либо вернётся один конкретный chatId, либо запрос не вернёт ничего
+            //(это в случае, если человек ботом пользуется, но данные его не хранятся)
+
+            if (queryResult.next())
+                return queryResult.getLong("chatId");
+
+            return null;
+        }
+        catch (SQLException ex) {
+            /*System.out.println("Не удалось извлечь данные");
+            ex.printStackTrace();*/
+            return null;
+        }
+    }
+
+    public void insertDataByChatId(long chatId, String[] dataFromText) {
+        try {
+            //Улица, 12:34, Марка, Модель, Цвет, Ъ000ЪЪ000 (или Ъ000ЪЪ00)
+            PreparedStatement ps = connection.prepareStatement("UPDATE Users SET metadata = ?, address = ?, untiltime = ?, brand = ?, model = ?, color = ?, numberplate = ? WHERE chatId = " + chatId);
+            ps.setInt(1, 1);
+            ps.setString(2, dataFromText[0]);
+            ps.setString(3, dataFromText[1]);
+            ps.setString(4, dataFromText[2]);
+            ps.setString(5, dataFromText[3]);
+            ps.setString(6, dataFromText[4]);
+            ps.setString(7, dataFromText[5]);
+
+            ps.executeUpdate();
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }
 

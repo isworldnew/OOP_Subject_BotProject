@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.Validations.*;
+import org.example.db.LocalDataBaseInteraction;
 
 public enum Command {
     START("/start", null) {
@@ -23,20 +24,20 @@ public enum Command {
                 "/deletemeta - Удалить данные, которые вы вводили. В последующие разы сможете ввести их заново."; }
     }, //filled
 
-    WILLBEFREE("/willbefree", new ValidForWBF()) {
+    WILLBEFREE("/willbefree", new ValidForWBF()){
         @Override
         String textToChat() {
-            return "Мы попросим вас ввести данные. В любой момент сохранённые данные можно удалить командой /delete.\n" +
+            return "Мы попросим вас ввести данные. В любой момент сохранённые данные можно удалить командой /deletemeta.\n" +
                     "Введите последовательность данных по образцу в формате через запятая+пробел.\n" +
                     "<b>Улица, 12:34, Марка, Модель, Цвет, Ъ000ЪЪ000 (или Ъ000ЪЪ00)</b>\n" +
                     "\n" +
-                    "Список улиц для ввода:\n" +
-                    "- Беговая\n" +
-                    "- Политехническая\n" +
-                    "- Миротворцева\n" +
-                    "- Большая Садовая\n" +
-                    "- 2-я Садовая\n" +
-                    "- KFC";
+                    "Список улиц для ввода (нажмите на имя\uD83D\uDC47\uD83D\uDC47\uD83D\uDC47 для быстрого копирования):\n" +
+                    "- <code>Беговая</code>\n" +
+                    "- <code>Политехническая</code>\n" +
+                    "- <code>Миротворцева</code>\n" +
+                    "- <code>Большая Садовая</code>\n" +
+                    "- <code>2-я Садовая</code>\n" +
+                    "- <code>KFC</code>";
         }
     }, //filled
 
@@ -76,5 +77,5 @@ public enum Command {
         this.rule = rule;
     }
 
-    abstract String textToChat();
+    abstract String textToChat(); //можно enum генериком сделать?))
 }
