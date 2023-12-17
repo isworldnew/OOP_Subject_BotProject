@@ -74,20 +74,25 @@ public class ParkingBot extends TelegramLongPollingBot {
         } //ready
 
         if (text.equals(Command.INFO.commandText)) {
+            db.deleteInvalidRecords();
             sendMessageToChat(chatId, Command.INFO.textToChat());
         } //ready
 
         if (text.equals(Command.WILLBEFREE.commandText)) {
+            db.deleteInvalidRecords();
             sendMessageToChat(chatId, Command.WILLBEFREE.textToChat());
             expectation.put(chatId, (Command.WILLBEFREE).toString());
         } //ready
 
         if (text.equals(Command.WHERETOPARK.commandText)) {
+            db.deleteInvalidRecords();
             String result = db.actualInformation();
             sendMessageToChat(chatId, result.endsWith("место:\n") ? "На данный момент информации нет\uD83D\uDE12" : result);
         } //ready
 
         if (text.equals(Command.TRAFFICPOLICEALARM.commandText)) {
+            db.deleteInvalidRecords();
+
             List<Long> allChatId = db.getAllChatId();
 
             for (Long currentChatId : allChatId)
@@ -96,6 +101,7 @@ public class ParkingBot extends TelegramLongPollingBot {
         } //ready?
 
         if (text.equals(Command.BLOCKED.commandText)) {
+            db.deleteInvalidRecords();
             sendMessageToChat(chatId, Command.BLOCKED.textToChat());
             expectation.put(chatId, (Command.BLOCKED).toString());
         } //ready
@@ -105,6 +111,8 @@ public class ParkingBot extends TelegramLongPollingBot {
         } //ready
 
         if (text.equals(Command.PLACES.commandText)) {
+            db.deleteInvalidRecords();
+
             File photo = new File("D:\\OOP_Project\\map.png");
 
             SendPhoto sendPhoto = new SendPhoto();
@@ -128,7 +136,6 @@ public class ParkingBot extends TelegramLongPollingBot {
         long chatId = update.getMessage().getChatId();
         String text = update.getMessage().getText();
 
-        //System.out.println(expectation.containsKey(chatId));
 
         if (expectation.containsKey(chatId)) {
             Command commandExpectingInputData = Command.valueOf(expectation.get(chatId));

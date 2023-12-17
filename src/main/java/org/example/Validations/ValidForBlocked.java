@@ -14,6 +14,7 @@ public class ValidForBlocked implements Validatable{
         //маске: LIKE ('[А-Я][0-9][0-9][0-9][А-Я][А-Я][0-9][0-9]')
         //OR LIKE ('[А-Я][0-9][0-9][0-9][А-Я][А-Я][0-9][0-9][0-9]')
 
+
         if (text.length() == 8) {
             Pattern numberPlatePattern = Pattern.compile("[А-Я][0-9][0-9][0-9][А-Я][А-Я][0-9][0-9]");
             Matcher checkPattern = numberPlatePattern.matcher(text.toUpperCase());

@@ -32,6 +32,8 @@ public class LocalDataBaseInteraction {
 
     public boolean registerNewChatId(long chatId) {
 
+        deleteInvalidRecords();
+
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT chatId FROM Users");
             ResultSet queryResult = ps.executeQuery();
@@ -61,6 +63,8 @@ public class LocalDataBaseInteraction {
 
     public List<Long> getAllChatId() {
 
+        deleteInvalidRecords();
+
         List<Long> result = new ArrayList<>();
 
         try {
@@ -80,6 +84,9 @@ public class LocalDataBaseInteraction {
     }
 
     public boolean deleteMeta(long chatId) {
+
+        deleteInvalidRecords();
+
         try {
             PreparedStatement ps = connection.prepareStatement("UPDATE Users SET metadata = 0, brand = NULL, model = NULL, color = NULL, numberplate = NULL, untiltime = NULL, address = NULL, ban_date = NULL WHERE chatId = " + chatId);
 
@@ -94,6 +101,9 @@ public class LocalDataBaseInteraction {
     }
 
     public Long getChatIdByNumberplate(String numberplate) {
+
+        deleteInvalidRecords();
+
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT chatId FROM Users WHERE numberplate = '" + numberplate + "'");
             ResultSet queryResult = ps.executeQuery();
@@ -114,6 +124,10 @@ public class LocalDataBaseInteraction {
     }
 
     public void insertDataByChatId(long chatId, String[] dataFromText) {
+
+        deleteInvalidRecords();
+        System.out.println("вощёд");
+
         try {
             //Улица, 12:34, Марка, Модель, Цвет, Ъ000ЪЪ000 (или Ъ000ЪЪ00)
             PreparedStatement ps = connection.prepareStatement("UPDATE Users SET metadata = ?, address = ?, untiltime = ?, brand = ?, model = ?, color = ?, numberplate = ? WHERE chatId = " + chatId);
