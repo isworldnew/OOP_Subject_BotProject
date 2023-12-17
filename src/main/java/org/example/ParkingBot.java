@@ -71,6 +71,7 @@ public class ParkingBot extends TelegramLongPollingBot {
 
         if (text.equals(Command.START.commandText)) {
             db.registerNewChatId(chatId);
+            sendMessageToChat(chatId, Command.START.textToChat());
         } //ready
 
         if (text.equals(Command.INFO.commandText)) {
@@ -164,10 +165,14 @@ public class ParkingBot extends TelegramLongPollingBot {
                 }
             }
 
+            else
+                sendMessageToChat(chatId, "<b>Вы некорректно ввели данные. Ещё раз нажмите на нужную вам команду, и прочтите формат ввода даннных внимательнее!</b>");
             //уведомление
             //в любом случае удаляем из очереди данный chatId с какой-то командой
-            expectation.remove(chatId);
+            //expectation.remove(chatId);
         }
+
+        expectation.remove(chatId);
 
     }
 
@@ -179,7 +184,7 @@ public class ParkingBot extends TelegramLongPollingBot {
 
         try { execute(msg); }
         catch(TelegramApiException ex) {
-            System.out.println("не отправилось");
+            System.out.println("не отправил ось");
         }
     }
 

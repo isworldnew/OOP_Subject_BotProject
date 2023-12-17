@@ -39,6 +39,15 @@ public class ValidForWBF implements Validatable {
         if (!vfb.isValid(dataFromText[5]))
             return false;
 
+        if (dataFromText[2].startsWith("SELECT") || dataFromText[2].startsWith("UPDATE") || dataFromText[2].startsWith("ALTER") || dataFromText[2].startsWith("DELETE") || dataFromText[2].startsWith("DROP") || dataFromText[2].startsWith("INSERT"))
+            return false;
+
+        if (dataFromText[3].startsWith("SELECT") || dataFromText[3].startsWith("UPDATE") || dataFromText[3].startsWith("ALTER") || dataFromText[3].startsWith("DELETE") || dataFromText[3].startsWith("DROP") || dataFromText[3].startsWith("INSERT"))
+            return false;
+
+        if (dataFromText[4].startsWith("SELECT") || dataFromText[4].startsWith("UPDATE") || dataFromText[4].startsWith("ALTER") || dataFromText[4].startsWith("DELETE") || dataFromText[4].startsWith("DROP") || dataFromText[4].startsWith("INSERT"))
+            return false;
+
         return true;
     }
 
