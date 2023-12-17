@@ -1,7 +1,5 @@
 package org.example;
 
-import org.example.Validations.ValidForBlocked;
-import org.example.Validations.Validatable;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -15,15 +13,17 @@ import org.example.db.LocalDataBaseInteraction;
 
 import java.io.File;
 import java.sql.Connection;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
+
 public class ParkingBot extends TelegramLongPollingBot {
 
     private static Map<Long, String> expectation = new HashMap<>();
-    private static Connection connection; //вот это поле вообще нужно было в старой версии, чтобы
+    //private static Connection connection; //вот это поле вообще нужно было в старой версии, чтобы
     //через него делать PreparedStatemnt() для запросов. Сейчас вынес это в отдельный класс.
     //Если нигде не понадобится, то можно и удалить
     private static LocalDataBaseInteraction db;
@@ -40,8 +40,10 @@ public class ParkingBot extends TelegramLongPollingBot {
         }
 
         db = new LocalDataBaseInteraction();
-        connection = db.getConnection();
+        //connection = db.getConnection();
 
+        //System.out.println(LocalTime.now().getHour() + ":" + LocalTime.now().getMinute());
+        //System.out.println("13:00".compareTo("13:40"));
     }
 
     @Override
@@ -78,11 +80,12 @@ public class ParkingBot extends TelegramLongPollingBot {
         if (text.equals(Command.WILLBEFREE.commandText)) {
             sendMessageToChat(chatId, Command.WILLBEFREE.textToChat());
             expectation.put(chatId, (Command.WILLBEFREE).toString());
-        }
+        } //ready
 
         if (text.equals(Command.WHERETOPARK.commandText)) {
-
-        }
+            String result = db.actualInformation();
+            sendMessageToChat(chatId, result.endsWith("место:\n") ? "На данный момент информации нет\uD83D\uDE12" : result);
+        } //ready
 
         if (text.equals(Command.TRAFFICPOLICEALARM.commandText)) {
             List<Long> allChatId = db.getAllChatId();
@@ -95,7 +98,7 @@ public class ParkingBot extends TelegramLongPollingBot {
         if (text.equals(Command.BLOCKED.commandText)) {
             sendMessageToChat(chatId, Command.BLOCKED.textToChat());
             expectation.put(chatId, (Command.BLOCKED).toString());
-        }
+        } //ready
 
         if (text.equals(Command.DELETEMETA.commandText)) {
             db.deleteMeta(chatId);

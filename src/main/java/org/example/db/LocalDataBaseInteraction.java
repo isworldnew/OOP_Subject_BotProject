@@ -1,8 +1,11 @@
 package org.example.db;
 
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.time.LocalTime;
 
 public class LocalDataBaseInteraction {
     private final String url = "jdbc:sqlite:D:\\OOP_Project\\ParkingDB.db";
@@ -129,5 +132,51 @@ public class LocalDataBaseInteraction {
         }
     }
 
+    public String actualInformation() {
+        deleteInvalidRecords();
+
+        try {
+            String result = "Где в скором времени должно освободиться место:\n";
+
+            PreparedStatement ps = connection.prepareStatement("SELECT address, untiltime FROM Users WHERE untiltime IS NOT NULL;");
+
+            ResultSet queryResult = ps.executeQuery();
+
+            while(queryResult.next()) {
+                result += "- " + queryResult.getString("address") + " ";
+                result += queryResult.getString("untiltime") + "\n";
+            }
+
+            return result;
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public void deleteInvalidRecords() {
+
+        try {
+            LocalTime currentTime = LocalTime.now();
+
+            String hours, minutes;
+
+            if (currentTime.getHour() < 10)
+                hours = "0" + currentTime.getHour();
+            else hours = String.valueOf(currentTime.getHour());
+
+            if (currentTime.getMinute() < 10)
+                minutes = "0" + currentTime.getMinute();
+            else minutes = String.valueOf(currentTime.getMinute());
+
+            PreparedStatement ps = connection.prepareStatement("UPDATE Users SET untiltime = NULL, address = NULL WHERE CAST(SUBSTR(untiltime, 0, 3) AS INTEGER) <= " + hours + " AND CAST(SUBSTR(untiltime, 4, 3) AS INTEGER) < " + minutes);
+            ps.executeUpdate();
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
 }
 
