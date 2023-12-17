@@ -126,7 +126,6 @@ public class LocalDataBaseInteraction {
     public void insertDataByChatId(long chatId, String[] dataFromText) {
 
         deleteInvalidRecords();
-        System.out.println("вощёд");
 
         try {
             //Улица, 12:34, Марка, Модель, Цвет, Ъ000ЪЪ000 (или Ъ000ЪЪ00)
